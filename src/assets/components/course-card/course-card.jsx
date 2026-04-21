@@ -2,9 +2,30 @@ import React from 'react';
 import './course-card.css';
 
 const CourseCard = (props) => {
-    const Enrolled=()=>{
-        alert("course enrolled sucessfully")
+const Enrolled = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Please login first');
+    return;
+  }
+  try {
+    const res = await fetch(`http://localhost:3000/api/courses/enroll/${props.id}`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert('Enrolled successfully!');
+    } else {
+      alert(data.message);
     }
+  } catch (err) {
+    alert('Error enrolling');
+  }
+};
     return (<>
         <div className="main-course-card">
             <div className="course-card">

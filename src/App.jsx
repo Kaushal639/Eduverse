@@ -11,6 +11,9 @@ import { createBrowserRouter} from 'react-router-dom'
   import { RouterProvider } from 'react-router-dom'
   import About from './assets/aboutpage/about.jsx'
 import Contact from './assets/contact/contact.jsx'
+import EnrolledCourse from './assets/course-enrolled/enrolled-course.jsx'
+import AdminDashboard from './assets/admin/AdminDashboard.jsx'
+
 
 function App() {
 
@@ -39,18 +42,28 @@ function App() {
       {
          path:"/contact",
          element:(<><Contact></Contact>,<Navbar></Navbar></>)
+      },
+      {
+         path:"/profile",
+         element:(<> <div>Profile Page</div>,<Navbar></Navbar></>)
+      },
+      {
+         path:"/enrolled",
+         element:(<> <EnrolledCourse></EnrolledCourse>,<Navbar></Navbar></>)
+      },
+      {
+         path:"/admin",
+         element:(<> <AdminDashboard></AdminDashboard>,<Navbar></Navbar></>)
       }
+
    ])
       
 
    return (<>
    <RouterProvider router={Router}></RouterProvider>
-   
-
-      
-   
    </>)
 
 }
 
 export default App
+

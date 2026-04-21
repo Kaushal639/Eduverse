@@ -5,26 +5,32 @@ import { CgProfile } from "react-icons/cg";
 import { Link } from 'react-router-dom';
 function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const token = localStorage.getItem('token');
+    const userData = token ? JSON.parse(atob(token.split('.')[1])) : null;
+    const isAdmin = userData && userData.role === 'admin';
+    const logout = () => {
+      localStorage.removeItem('token');
+      window.location.href = '/';
+    };
     
+    function adminClick() {
+        console.log("Welcome to Admin Dashboard");
+    }
+
     function homeClick() {
-        
         console.log("Welcome to Home Page");
     }
      function aboutClick() {
-        
-          console.log("Welcome to About Page");
+        console.log("Welcome to About Page");
     }
      function coursesClick() {
-        
-            console.log("Welcome to Courses Page");
+        console.log("Welcome to Courses Page");
     }
      function contactClick() {
-        
-          console.log("Welcome to Contact Page");
+        console.log("Welcome to Contact Page");
     }
      function profileClick() {
-    
-          console.log("Welcome to Profile Page");
+        console.log("Welcome to Profile Page");
     }
 
 
@@ -48,7 +54,19 @@ function Navbar() {
             <li id="about" onClick={aboutClick}><Link to="/about"><h1>About</h1></Link></li>
             <li id="courses" onClick={coursesClick}><Link to="/courses"><h1>Courses</h1></Link></li>
             <li id="contact" onClick={contactClick}><Link to="/contact"><h1>Contact</h1></Link></li>
-            <li id="profile" onClick={profileClick}><Link to="/login"><h1><CgProfile size={30} color="white"/></h1></Link></li>
+    <li id="profile" onClick={profileClick}>
+      {token ? (
+        <>
+          <Link to="/profile"><h1><CgProfile size={30} color="white"/></h1></Link>
+          {isAdmin && (
+            <li id="admin" onClick={adminClick}><Link to="/admin"><h1>Admin</h1></Link></li>
+          )}
+          <button onClick={logout}>Logout</button>
+        </>
+      ) : (
+        <Link to="/login"><h1><CgProfile size={30} color="white"/></h1></Link>
+      )}
+    </li>
             </ul>
             
         </div>

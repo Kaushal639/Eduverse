@@ -9,10 +9,12 @@ function Home() {
     <div className="homepage" id="home">
          <div className="container-section">
       <Container title="ACHEIVED SUCCESS BY OUR STUDENTS">
-         <Card name="vinod" department="Computer Science" course="Software Engineering" image="https://images.unsplash.com/photo-1768933294181-82778103e501?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D"></Card> 
+         
          <Card name="alice" department="Information Technology" course="Network Security" image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"></Card>
          <Card name="bob" department="Electronics" course="Embedded Systems" image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"></Card>
          <Card name="carol" department="Mechanical Engineering" course="Thermodynamics" image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"></Card> 
+          <Card name="carol" department="Mechanical Engineering" course="Thermodynamics" image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"></Card> 
+           <Card name="carol" department="Mechanical Engineering" course="Thermodynamics" image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D"></Card> 
       </Container></div> 
     </div>
     </>

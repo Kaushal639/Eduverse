@@ -53,7 +53,7 @@
 }
 p{
     font-size: 1.1vw;
-    color: #333333be;
+    color: #cd6060be;
     font-weight: 700;
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -78,16 +78,17 @@ p{
 }
 h5{
     font-size: 1.3vw;
-    color: #00000073;
+    color: #988d8d73;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: end;  
     align-items: center;
+    text-decoration: line-through;
 }
 h3{
     font-size: 1.7vw;
-    color: #200696c0;
+    color: #1781afc0;
     font-weight: 950;
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -112,7 +113,7 @@ h3{
 @media(max-width:768px){
     h3{
     font-size: 22px;
-    color: #200696c0;
+    color: #8d88a3c0;
     font-weight: 950;
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -158,7 +159,7 @@ h3{
 }
 h5{
     font-size: 15px;
-    color: #00000073;
+    color: #99929273;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
     display: flex;

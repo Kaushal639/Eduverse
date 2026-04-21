@@ -1,104 +1,112 @@
 import React, { useState } from 'react';
 import './loginform.css';
-import { LocalStorage, GetData } from '../localstorage/localstorage.jsx';
-import { Link } from 'react-router-dom';
-import Signupform from '../components/signupform/signup.jsx';
-function Loginform({ onSignup }){
-    
-    const [Useremail, setUseremail] = useState('');
-    const [Password, setPassword] = useState('');
-    function handleLogin(e){
-        e.preventDefault();
-        console.log("Useremail:", Useremail);
-        console.log("Password:", Password);
-        
+import { Link, useNavigate } from 'react-router-dom';
 
-        const storedData = JSON.parse(localStorage.getItem('users'));
-        const user = storedData.find(u => u.email === Useremail && u.password === Password);
-        if (user) {
-            alert('Login successful!');
-        } else {
-            alert('Invalid credentials');
-        }
+function Loginform() {
+
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("Student Login clicked");
+
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
     }
-   React.useEffect(()=>{
-     LocalStorage();
-   }, [])
-   React.useEffect(()=>{
-    GetData();
-   }, [])
-   function SignupClick(){
-    alert("Redirecting to Signup Page");
-}
-   
 
-    return(<>
-    <div className="main-login-form">
-        <div className="login-form">
-        <div className="username">
-            <input onChange={(e)=> setUseremail(e.target.value)} type="email" placeholder="Email" />
-        </div>
-        <div className="password">
-            <input onChange={(e)=> setPassword(e.target.value)} type="password" placeholder="Password" />
-        </div>
-        <div className="login-button">
-            <button onClick={handleLogin}>Login</button>
-            </div>
-            <div className="signup-button">
-                <button onClick={onSignup}><Link to='/login/signup'>Sign up</Link></button>
-            </div>
-        </div></div>
-        </>)
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Login successful!");
+        localStorage.setItem("token", data.token);
+        navigate('/');
+      } else {
+        alert(data.message || "Invalid credentials");
       }
+
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
+    }
+  };
+
+  const handleAdminLogin = async (e) => {
+    e.preventDefault();
+    console.log("Admin Login clicked");
+
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Admin login successful!");
+        localStorage.setItem("token", data.token);
+        navigate('/');
+      } else {
+        alert(data.message || "Invalid admin credentials");
+      }
+
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
+    }
+  };
+
+  return (
+    <div className="main-login-form">
+      <div className="login-form">
+        <h2>Login</h2>
+
+        <input
+        id="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+        id="pass"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <div className="login-buttons">
+          <button onClick={handleLogin}>Login as Student</button>
+          <button onClick={handleAdminLogin}>Login as Admin</button>
+        </div>
+
+        <div className="signup-button">
+          <Link to="/login/signup">
+            <button>Sign up</button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default Loginform;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

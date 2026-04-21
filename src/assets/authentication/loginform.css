@@ -11,22 +11,25 @@
     background-position: center;
 background-image:cover;
 flex-wrap:wrap;
+
 } 
 .login-form {
     height: 100vh;
     width: 100%;
     color: rgba(128, 128, 128, 0.212);
     background-color: transparent;
-
+    margin:1vw;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
     flex-direction: column;
+    padding: 3vw;
+
     
 }
 .username, .password {
-    margin: 1vw;
+    margin: 2vw 1vw 4vw 1vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,14 +41,18 @@ flex-wrap:wrap;
     border: 1px solid gray;
     font-size: 1.5vw;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  
 }
-.login-button {
-    height: 4vw;
+.login-buttons {
+    height: auto;
     width: 60vw;
-    margin: 3vw;
+    margin: 4vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 2vw;
     background-color: transparent;
     
 }
@@ -59,17 +66,20 @@ flex-wrap:wrap;
     background-color:transparent;
 }
 
-.login-button button {
-    width: 11vw;
+.login-buttons button {
+    width: 20vw;
     height: 5vw;
     padding: 1vw;
     border-radius: 2vw;
     border: 2px solid gray;
     background-color: #73dbd3;
-    background-color: #caaf13;
     color: rgb(88, 48, 48);
     font-size: 1.5vw;
     cursor: pointer;
+}
+
+.login-buttons button:nth-child(2) {
+    background-color: #ff6b6b;
 }
 
 .signup-button button {
@@ -119,5 +129,16 @@ flex-wrap:wrap;
     border: 1px solid gray;
     font-size: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#pass,#email{
+     width: 60vw;
+     height:10vw;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3vw;
+    outline: none;
+    transition: 0.3s;
+    margin:3vw;
+
 }
 }

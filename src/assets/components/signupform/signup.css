@@ -94,6 +94,7 @@ button {
     cursor: pointer;
     transition: 0.3s;
     display: flex;
+    margin-left: 90px;
    
     justify-content: center;
     align-items: center;
@@ -114,6 +115,7 @@ input[type="password"] {
     border-radius: 3vw;
     outline: none;
     transition: 0.3s;
+    margin: 5px;
 }   
 @media(max-width:768px){
     button {
