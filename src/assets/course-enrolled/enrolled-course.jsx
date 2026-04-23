@@ -68,9 +68,16 @@ const EnrolledCourse = () => {
                 <h4>Videos</h4>
                 <ul>
                   {course.videos && course.videos.map((v, i) => (
-                    <li key={i}>
-                      <a href={v.url} target="_blank" rel="noopener noreferrer">{v.title}</a>
-                      <span>{v.duration}</span>
+                    <li key={i} className="video-item">
+                      <p className="video-title">{v.title} {v.duration && <span>({v.duration})</span>}</p>
+                      <video
+                        controls
+                        width="100%"
+                        style={{ maxWidth: '640px', borderRadius: '8px', marginTop: '8px' }}
+                        src={v.url}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
                     </li>
                   ))}
                   {(!course.videos || course.videos.length === 0) && (

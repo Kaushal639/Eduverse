@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { IKContext, IKUpload } from 'imagekitio-react';
 import CourseCard from '../components/course-card/course-card.jsx';
 import Container from '../components/container/container.jsx';
 import './AdminDashboard.css';
@@ -14,7 +15,8 @@ const AdminDashboard = () => {
     discount: '',
     image: ''
   });
-  const [videoForms, setVideoForms] = useState({}); // { courseId: {title: '', url: '', duration: ''} }
+  const [videoForms, setVideoForms] = useState({}); // { courseId: {title: '', url: '', duration: '', uploading: false} }
+  const [imagekitAuth, setImagekitAuth] = useState(null);
 
   const token = localStorage.getItem('token');
   const userData = token ? JSON.parse(atob(token.split('.')[1])) : null;
@@ -30,11 +32,30 @@ const AdminDashboard = () => {
     }
   };
 
+  // Fetch ImageKit authentication parameters
   useEffect(() => {
     if (!token || userData?.role !== 'admin') {
       window.location.href = '/login';
       return;
     }
+
+    const fetchImageKitAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/imagekit-auth', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const auth = await res.json();
+          setImagekitAuth(auth);
+        } else {
+          console.error('Failed to fetch ImageKit auth parameters');
+        }
+      } catch (error) {
+        console.error('Error fetching ImageKit auth:', error);
+      }
+    };
+
+    fetchImageKitAuth();
   }, [token, userData]);
 
   useEffect(() => {
@@ -72,7 +93,7 @@ const AdminDashboard = () => {
 
   const handleAddVideo = async (courseId) => {
     const videoData = videoForms[courseId];
-    if (!videoData.title || !videoData.url) return alert('Please fill title and URL');
+    if (!videoData.title || !videoData.url) return alert('Please fill title and upload a video');
     try {
       const res = await fetch(`/api/courses/${courseId}/videos`, {
         method: 'POST',
@@ -80,11 +101,11 @@ const AdminDashboard = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ video: videoData })
+        body: JSON.stringify({ video: { title: videoData.title, url: videoData.url, duration: videoData.duration } })
       });
       if (res.ok) {
         alert('Video added successfully!');
-        setVideoForms({ ...videoForms, [courseId]: { title: '', url: '', duration: '' } });
+        setVideoForms({ ...videoForms, [courseId]: { title: '', url: '', duration: '', uploading: false } });
         fetchCourses();
       } else {
         const data = await res.json();
@@ -94,13 +115,73 @@ const AdminDashboard = () => {
       console.error('Error adding video:', error);
       alert('Error adding video');
     }
-  }; 
+  };
+
+  const handleDeleteVideo = async (courseId, videoIndex) => {
+    if (!confirm('Are you sure you want to delete this video?')) return;
+    try {
+      const res = await fetch(`/api/courses/${courseId}/videos/${videoIndex}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        alert('Video deleted successfully!');
+        fetchCourses();
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Error deleting video');
+      }
+    } catch (error) {
+      console.error('Error deleting video:', error);
+      alert('Error deleting video');
+    }
+  };
+
+  const handleDeleteCourse = async (courseId) => {
+    if (!confirm('Are you sure you want to delete this course? This action cannot be undone.')) return;
+    try {
+      const res = await fetch(`/api/courses/${courseId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        alert('Course deleted successfully!');
+        fetchCourses();
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Error deleting course');
+      }
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      alert('Error deleting course');
+    }
+  };
 
   const updateVideoForm = (courseId, field, value) => {
     setVideoForms(prev => ({
       ...prev,
       [courseId]: { ...prev[courseId], [field]: value }
     }));
+  };
+
+  const onUploadSuccess = (courseId, result) => {
+    console.log('Upload success', result);
+    updateVideoForm(courseId, 'url', result.url);
+    updateVideoForm(courseId, 'uploading', false);
+  };
+
+  const onUploadError = (courseId, err) => {
+    console.error('Upload error', err);
+    updateVideoForm(courseId, 'uploading', false);
+    alert('Video upload failed. Please try again.');
+  };
+
+  const onUploadStart = (courseId) => {
+    updateVideoForm(courseId, 'uploading', true);
   };
 
   return (
@@ -162,17 +243,47 @@ const AdminDashboard = () => {
                 discount={course.discount || '0%'}
                 image={course.image || 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60'}
               />
+              <button
+                onClick={() => handleDeleteCourse(course._id)}
+                style={{ background: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px', marginTop: '8px' }}
+              >
+                Delete Course
+              </button>
               <h4>Add Video</h4>
               <input
                 placeholder="Video Title"
                 value={videoForms[course._id]?.title || ''}
                 onChange={(e) => updateVideoForm(course._id, 'title', e.target.value)}
               />
-              <input
-                placeholder="YouTube Embed URL"
-                value={videoForms[course._id]?.url || ''}
-                onChange={(e) => updateVideoForm(course._id, 'url', e.target.value)}
-              />
+              {imagekitAuth ? (
+                <IKContext
+                  publicKey={imagekitAuth.publicKey}
+                  urlEndpoint={imagekitAuth.urlEndpoint}
+                  authenticator={() => Promise.resolve(imagekitAuth)}
+                >
+                  <label style={{ cursor: 'pointer', display: 'inline-block', padding: '6px 12px', background: '#007bff', color: '#fff', borderRadius: '4px', margin: '8px 0' }}>
+                    {videoForms[course._id]?.uploading ? 'Uploading...' : (videoForms[course._id]?.url ? 'Change Video' : 'Upload Video')}
+                    <IKUpload
+                      fileName={`video-${course._id}`}
+                      tags={['video', 'course']}
+                      useUniqueFileName={true}
+                      folder="/course-videos"
+                      isPrivateFile={false}
+                      onUploadStart={() => onUploadStart(course._id)}
+                      onSuccess={(result) => onUploadSuccess(course._id, result)}
+                      onError={(err) => onUploadError(course._id, err)}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </IKContext>
+              ) : (
+                <p style={{ color: '#888' }}>Loading upload service...</p>
+              )}
+              {videoForms[course._id]?.url && (
+                <p style={{ fontSize: '12px', color: 'green' }}>
+                  Uploaded: <a href={videoForms[course._id].url} target="_blank" rel="noopener noreferrer">Preview</a>
+                </p>
+              )}
               <input
                 placeholder="Duration (e.g. 10:30)"
                 value={videoForms[course._id]?.duration || ''}
@@ -182,7 +293,15 @@ const AdminDashboard = () => {
               <h5>Videos ({course.videos?.length || 0}):</h5>
               <ul>
                 {course.videos?.map((v, i) => (
-                  <li key={i}>{v.title} - {v.url} ({v.duration})</li>
+                  <li key={i}>
+                    {v.title} - {v.url} ({v.duration}){' '}
+                    <button
+                      onClick={() => handleDeleteVideo(course._id, i)}
+                      style={{ background: '#dc3545', color: '#fff', border: 'none', borderRadius: '4px', padding: '2px 6px', cursor: 'pointer', fontSize: '11px' }}
+                    >
+                      Delete
+                    </button>
+                  </li>
                 ))}
               </ul>
             </div>
