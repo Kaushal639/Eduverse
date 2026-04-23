@@ -1,0 +1,105 @@
+.coursespage {
+  min-height: 100vh;
+  padding-top: 10vw;
+  box-sizing: border-box;
+}
+
+/* Override Container positioning on courses page to prevent navbar overlap */
+.coursespage .main-container {
+  position: relative;
+  width: 100vw;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.coursespage .container {
+  position: relative;
+  margin-top: 2vw;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95vw;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .coursespage {
+    padding-top: 80px;
+  }
+
+  .coursespage .container {
+    margin-top: 20px;
+    width: 95vw;
+  }
+}
+
+.courses-state-message {
+  width: 100%;
+  padding: 2vw;
+  text-align: center;
+  border-radius: 1vw;
+  margin: 1vw 0;
+}
+
+.courses-state-message p {
+  font-size: 1.5vw;
+  font-weight: 600;
+  margin: 0;
+}
+
+.courses-state-message.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.courses-state-message.loading p {
+  color: rgb(91, 216, 145);
+}
+
+.spinner {
+  width: 3vw;
+  height: 3vw;
+  border: 0.4vw solid rgba(91, 216, 145, 0.3);
+  border-top: 0.4vw solid rgb(91, 216, 145);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.courses-state-message.error {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.courses-state-message.error p {
+  color: #ff6b6b;
+}
+
+.courses-state-message.empty {
+  background-color: rgba(224, 197, 44, 0.1);
+  border: 1px solid rgba(224, 197, 44, 0.3);
+}
+
+.courses-state-message.empty p {
+  color: rgb(224, 197, 44);
+}
+
+@media (max-width: 768px) {
+  .courses-state-message p {
+    font-size: 16px;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 4px;
+  }
+}
+

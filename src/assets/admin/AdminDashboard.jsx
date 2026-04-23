@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CourseCard from '../components/course-card/course-card.jsx';
 import Container from '../components/container/container.jsx';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const [courses, setCourses] = useState([]);
@@ -20,9 +21,10 @@ const AdminDashboard = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/courses');
+      const res = await fetch('/api/courses');
       const data = await res.json();
-      setCourses(data);
+      console.log('Admin courses data:', data);
+      setCourses(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching courses:', error);
     }
@@ -33,13 +35,19 @@ const AdminDashboard = () => {
       window.location.href = '/login';
       return;
     }
+  }, [token, userData]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCourses();
-  }, []); 
+  }, []);
+
+
 
   const handleCreateCourse = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3000/api/courses/create', {
+      const res = await fetch('/api/courses/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,6 +65,7 @@ const AdminDashboard = () => {
         alert(data.message || 'Error creating course');
       }
     } catch (error) {
+      console.error('Error creating course:', error);
       alert('Error creating course');
     }
   }; 
@@ -65,7 +74,7 @@ const AdminDashboard = () => {
     const videoData = videoForms[courseId];
     if (!videoData.title || !videoData.url) return alert('Please fill title and URL');
     try {
-      const res = await fetch(`http://localhost:3000/api/courses/${courseId}/videos`, {
+      const res = await fetch(`/api/courses/${courseId}/videos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,6 +91,7 @@ const AdminDashboard = () => {
         alert(data.message || 'Error adding video');
       }
     } catch (error) {
+      console.error('Error adding video:', error);
       alert('Error adding video');
     }
   }; 
@@ -140,9 +150,9 @@ const AdminDashboard = () => {
         )}
 
         <h3>Your Courses</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className="admin-courses-grid">
           {courses.map(course => (
-            <div key={course._id} style={{ margin: '10px', width: '300px', border: '1px solid #ddd', padding: '10px' }}>
+            <div key={course._id} className="admin-course-item">
               <CourseCard
                 id={course._id}
                 title={course.title}
@@ -157,17 +167,17 @@ const AdminDashboard = () => {
                 placeholder="Video Title"
                 value={videoForms[course._id]?.title || ''}
                 onChange={(e) => updateVideoForm(course._id, 'title', e.target.value)}
-              /><br/>
+              />
               <input
                 placeholder="YouTube Embed URL"
                 value={videoForms[course._id]?.url || ''}
                 onChange={(e) => updateVideoForm(course._id, 'url', e.target.value)}
-              /><br/>
+              />
               <input
                 placeholder="Duration (e.g. 10:30)"
                 value={videoForms[course._id]?.duration || ''}
                 onChange={(e) => updateVideoForm(course._id, 'duration', e.target.value)}
-              /><br/>
+              />
               <button onClick={() => handleAddVideo(course._id)}>Add Video</button>
               <h5>Videos ({course.videos?.length || 0}):</h5>
               <ul>

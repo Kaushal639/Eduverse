@@ -1,0 +1,118 @@
+.profile-page {
+  min-height: 100vh;
+  padding-top: 12vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vw;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  color: #fff;
+}
+
+.profile-page h1 {
+  font-size: 3vw;
+  font-weight: 900;
+  font-family: 'Arial Black', Gadget, sans-serif;
+  color: rgb(79, 246, 207);
+  margin: 0;
+}
+
+.user-info {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2vw;
+  padding: 2vw 4vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+
+.user-info h2 {
+  font-size: 1.8vw;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.user-info p {
+  font-size: 1.2vw;
+  color: rgb(205, 134, 63);
+  margin: 0;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1.5vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-actions .btn {
+  height: 3.5vw;
+  min-height: 40px;
+  padding: 0 2.5vw;
+  border: none;
+  border-radius: 2vw;
+  font-size: 1.1vw;
+  font-weight: 700;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.profile-actions .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.enrolled-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.admin-btn {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #302b63;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%);
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding-top: 100px;
+    gap: 20px;
+  }
+
+  .profile-page h1 {
+    font-size: 28px;
+  }
+
+  .user-info {
+    padding: 20px 30px;
+    border-radius: 20px;
+  }
+
+  .user-info h2 {
+    font-size: 20px;
+  }
+
+  .user-info p {
+    font-size: 16px;
+  }
+
+  .profile-actions .btn {
+    height: 45px;
+    padding: 0 24px;
+    border-radius: 25px;
+    font-size: 16px;
+  }
+}
+

@@ -54,19 +54,15 @@ function Navbar() {
             <li id="about" onClick={aboutClick}><Link to="/about"><h1>About</h1></Link></li>
             <li id="courses" onClick={coursesClick}><Link to="/courses"><h1>Courses</h1></Link></li>
             <li id="contact" onClick={contactClick}><Link to="/contact"><h1>Contact</h1></Link></li>
-    <li id="profile" onClick={profileClick}>
-      {token ? (
-        <>
-          <Link to="/profile"><h1><CgProfile size={30} color="white"/></h1></Link>
-          {isAdmin && (
-            <li id="admin" onClick={adminClick}><Link to="/admin"><h1>Admin</h1></Link></li>
-          )}
-          <button onClick={logout}>Logout</button>
-        </>
-      ) : (
-        <Link to="/login"><h1><CgProfile size={30} color="white"/></h1></Link>
-      )}
+
+
+
+<li id="profile" onClick={profileClick}>
+      <Link to={token ? "/profile" : "/login"}><h1><CgProfile size={30} color="white"/></h1></Link>
     </li>
+
+
+
             </ul>
             
         </div>

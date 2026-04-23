@@ -9,7 +9,7 @@ const Enrolled = async () => {
     return;
   }
   try {
-    const res = await fetch(`http://localhost:3000/api/courses/enroll/${props.id}`, {
+      const res = await fetch(`/api/courses/enroll/${props.id}`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ const Enrolled = async () => {
       alert(data.message);
     }
   } catch (err) {
-    alert('Error enrolling');
+    err('Error enrolling');
   }
 };
     return (<>

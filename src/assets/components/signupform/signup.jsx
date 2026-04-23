@@ -24,7 +24,7 @@ function Signupform() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/signup', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,8 @@ function Signupform() {
           </select>
         </div>
 
-        <button type="submit" onClick={() => setRole('user')}>Sign up</button>
+        <button type="submit">Sign up</button>
+
         
 
       </form>
