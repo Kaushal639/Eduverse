@@ -1,59 +1,74 @@
 import React from 'react';
 import './course-card.css';
 
-const CourseCard = (props) => {
-const Enrolled = async () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Please login first');
-    return;
-  }
-  try {
-      const res = await fetch(`/api/courses/enroll/${props.id}`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    const data = await res.json();
-    if (res.ok) {
-      alert('Enrolled successfully!');
-    } else {
-      alert(data.message);
-    }
-  } catch (err) {
-    err('Error enrolling');
-  }
-};
-    return (<>
-        <div className="main-course-card">
+const CourseCard = ({ isAdmin = false, className = "", ...props }) => {
+    const Enrolled = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Please login first');
+            return;
+        }
+        try {
+            const res = await fetch(`/api/courses/enroll/${props.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Enrolled successfully!');
+            } else {
+                alert(data.message);
+            }
+        } catch {
+            alert('Error enrolling');
+        }
+    };
+
+    return (
+<div className={`main-course-card scroll-animate ${className}`}>
             <div className="course-card">
                 <div className="course-image">
-                    <img src={props.image} alt="tuitor-img" />
+                    <img src={props.image || 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=500&auto=format&fit=crop&q=60'} alt={props.title} />
+                    <div className="course-image-overlay"></div>
                 </div>
                 <div className="course-details">
-                    <div id="h1">
-                    <h1>{props.title}</h1><br/>
-                    <p>{props.description}</p> <br/>
-                  
+                    <div className="course-header">
+                        <h1>{props.title}</h1>
+                        <p>{props.description}</p>
                     </div>
                     <div className="price-discount-section">
-                    <div className="price-section">
-                      <h2>Price: {props.offerprice}<h5>{props.price}</h5></h2>
-                      </div>
-                <div id="h3">
-                    <h3>{props.discount}<span>off</span></h3>
-                </div>
-                   </div>
-
+                        <div className="price-section">
+                            <span className="current-price">₹{props.offerprice}</span>
+                            <span className="original-price">₹{props.price}</span>
+                        </div>
+                        <div className="discount-badge">
+                            <span>{props.discount}</span>
+                            <small>OFF</small>
+                        </div>
+                    </div>
                 </div>
                 <div className="buy-now">
-                    <button onClick={Enrolled}>Enroll Now</button>
+                    {isAdmin ? (
+                        <button className="manage-btn" disabled>
+                            <i className="fas fa-cog"></i>
+                            Manage
+                        </button>
+                    ) : (
+                        <button onClick={Enrolled} className="enroll-btn">
+                            <i className="fas fa-rocket"></i>
+                            Enroll Now
+                        </button>
+                    )}
                 </div>
             </div>
-            </div>
-</>
-    )
-}
+            <div className="card-border-glow"></div>
+        </div>
+    );
+
+};
+
 export default CourseCard;
+

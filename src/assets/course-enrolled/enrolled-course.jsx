@@ -8,9 +8,8 @@ const EnrolledCourse = () => {
   const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState(token ? null : 'Please log in to view your enrolled courses.');
 
-  useEffect(() => {
+  const fetchEnrolledCourses = () => {
     if (!token) return;
-
     fetch('/api/courses/my-courses', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
@@ -35,11 +34,20 @@ const EnrolledCourse = () => {
         setCourses([]);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchEnrolledCourses();
   }, [token]);
 
   return (
     <div className="enrolled-page" id="enrolled">
-      <div className="main-container">
+      <div className="enrolled-bg-shapes">
+        <div className="enrolled-shape shape-1"></div>
+        <div className="enrolled-shape shape-2"></div>
+      </div>
+
+      <div className="container-section">
         <Container title="MY ENROLLED COURSES">
           {loading && (
             <div className="enrolled-state-message loading">
@@ -50,40 +58,78 @@ const EnrolledCourse = () => {
 
           {!loading && error && (
             <div className="enrolled-state-message error">
-              <p>⚠️ {error}</p>
+              <i className="fas fa-exclamation-triangle"></i>
+              <p>{error}</p>
             </div>
           )}
 
           {!loading && !error && courses.length === 0 && (
             <div className="enrolled-state-message empty">
+              <i className="fas fa-inbox"></i>
               <p>You haven't enrolled in any courses yet.</p>
             </div>
           )}
 
           {!loading && !error && courses.map(course => (
             <div className="enrolled-course-card" key={course._id}>
-              <h3>{course.title}</h3>
-              <p className="course-desc">{course.description}</p>
+              <div className="course-card-header">
+                <div className="course-card-image">
+                  <img 
+                    src={course.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60'} 
+                    alt={course.title} 
+                  />
+                </div>
+                <div className="course-card-info">
+                  <h3>{course.title}</h3>
+                  <p className="course-desc">{course.description}</p>
+                  <div className="course-progress">
+                    <div className="progress-bar">
+                      <div 
+                        className="progress-fill" 
+                        style={{ width: `${Math.min(((course.videos?.length || 0) * 20), 100)}%` }}
+                      ></div>
+                    </div>
+                    <span className="progress-text">
+                      {course.videos?.length || 0} videos available
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+
               <div className="videos-section">
-                <h4>Videos</h4>
-                <ul>
+                <div className="videos-header">
+                  <i className="fas fa-play-circle"></i>
+                  <h4>Videos ({course.videos?.length || 0})</h4>
+                </div>
+                <div className="videos-list">
                   {course.videos && course.videos.map((v, i) => (
-                    <li key={i} className="video-item">
-                      <p className="video-title">{v.title} {v.duration && <span>({v.duration})</span>}</p>
-                      <video
-                        controls
-                        width="100%"
-                        style={{ maxWidth: '640px', borderRadius: '8px', marginTop: '8px' }}
-                        src={v.url}
-                      >
-                        Your browser does not support the video tag.
-                      </video>
-                    </li>
+                    <div key={i} className="video-item">
+                      <div className="video-info">
+                        <span className="video-number">{i + 1}</span>
+                        <div className="video-details">
+                          <p className="video-title">{v.title}</p>
+                          {v.duration && <span className="video-duration"><i className="fas fa-clock"></i> {v.duration}</span>}
+                        </div>
+                      </div>
+                      <div className="video-player-wrapper">
+                        <video
+                          controls
+                          className="course-video"
+                          src={v.url}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    </div>
                   ))}
                   {(!course.videos || course.videos.length === 0) && (
-                    <li>No videos available</li>
+                    <div className="no-videos">
+                      <i className="fas fa-film"></i>
+                      <p>No videos available for this course yet</p>
+                    </div>
                   )}
-                </ul>
+                </div>
               </div>
             </div>
           ))}

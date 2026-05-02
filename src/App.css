@@ -1,35 +1,82 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:sans-serif;
+/* ===== MAIN APP LAYOUT ===== */
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
+
 .main {
-    width: 100%;
-    height: fit-content;
-    min-height: 100vh;
-    background-color: black;
-    margin: 1vw;
-    padding: 3vw;
-    gap:2vw;
-    display:flex;
-    flex-direction: column;
-    
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
 }
+
 .container-section {
-    width: 100%;
-    height: fit-content;
-    margin-top: 6vw;
-    gap: 2vw;
-    padding: 2vw;
-    
-   
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  padding-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
-.nav-bar {
-    width: 100%;
-    height: 6vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-   
+
+/* Floating particles decoration */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  opacity: 0.15;
+  animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.15;
+  }
+  90% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Page entrance animation */
+.page-enter {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Ensure content is above background */
+.container-section > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsive padding */
+@media (max-width: 768px) {
+  .container-section {
+    padding-top: 80px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+

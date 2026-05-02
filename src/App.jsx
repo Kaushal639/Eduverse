@@ -23,49 +23,45 @@ function App() {
    const Router=createBrowserRouter([
       {
          path:"/",
-         element:(<><Home></Home>,<Navbar></Navbar></>)
+         element:(<><Home /><Navbar /></>)
       },
       {
          path:"/courses",
-         element:(<><Coursespage></Coursespage>,<Navbar></Navbar> </>)
+         element:(<><Coursespage /><Navbar /></>)
       },
 
       {
          path:"/login",
-         element:(<>
-         
-         <Loginform></Loginform></>)
+         element:(<><Loginform /></>)
       },
 
 
       {
          path:"/login/signup",
-         element:(<>
-         
-         <Signupform></Signupform></>)
+         element:(<><Signupform /></>)
       },
 
       {
          path:"/about",
-         element:(<><About></About>,<Navbar></Navbar></>)
+         element:(<><About /><Navbar /></>)
       },
       {
          path:"/contact",
-         element:(<><Contact></Contact>,<Navbar></Navbar></>)
+         element:(<><Contact /><Navbar /></>)
       },
 
       {
          path:"/profile",
-         element:(<> <Profile/><Navbar></Navbar></>)
+         element:(<><Profile /><Navbar /></>)
       },
 
       {
          path:"/enrolled",
-         element:(<> <EnrolledCourse></EnrolledCourse>,<Navbar></Navbar></>)
+         element:(<><EnrolledCourse /><Navbar /></>)
       },
       {
          path:"/admin",
-         element:(<> <AdminDashboard></AdminDashboard></>)
+         element:(<><AdminDashboard /></>)
       }
 
    ])

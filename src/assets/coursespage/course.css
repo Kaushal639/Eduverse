@@ -1,105 +1,150 @@
 .coursespage {
-  min-height: 100vh;
-  padding-top: 10vw;
-  box-sizing: border-box;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* Override Container positioning on courses page to prevent navbar overlap */
+.courses-hero {
+    padding: 140px 5% 40px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.courses-tag {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.courses-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 12px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.courses-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.coursespage .container-section {
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+
+/* Override Container positioning on courses page */
 .coursespage .main-container {
-  position: relative;
-  width: 100vw;
-  height: auto;
-  display: flex;
-  justify-content: center;
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .coursespage .container {
-  position: relative;
-  margin-top: 2vw;
-  margin-left: auto;
-  margin-right: auto;
-  width: 95vw;
-  height: auto;
-}
-
-@media (max-width: 768px) {
-  .coursespage {
-    padding-top: 80px;
-  }
-
-  .coursespage .container {
-    margin-top: 20px;
+    position: relative;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
     width: 95vw;
-  }
+    max-width: 1200px;
+    height: auto;
 }
 
 .courses-state-message {
-  width: 100%;
-  padding: 2vw;
-  text-align: center;
-  border-radius: 1vw;
-  margin: 1vw 0;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.courses-state-message i {
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
 .courses-state-message p {
-  font-size: 1.5vw;
-  font-weight: 600;
-  margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
 }
 
 .courses-state-message.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1vw;
+    color: rgb(91, 216, 145);
 }
 
-.courses-state-message.loading p {
-  color: rgb(91, 216, 145);
+.courses-state-message.loading i {
+    color: rgb(91, 216, 145);
 }
 
 .spinner {
-  width: 3vw;
-  height: 3vw;
-  border: 0.4vw solid rgba(91, 216, 145, 0.3);
-  border-top: 0.4vw solid rgb(91, 216, 145);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(91, 216, 145, 0.2);
+    border-top: 3px solid rgb(91, 216, 145);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 .courses-state-message.error {
-  background-color: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 0, 0, 0.3);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ff6b6b;
 }
 
-.courses-state-message.error p {
-  color: #ff6b6b;
+.courses-state-message.error i {
+    color: #ff6b6b;
 }
 
 .courses-state-message.empty {
-  background-color: rgba(224, 197, 44, 0.1);
-  border: 1px solid rgba(224, 197, 44, 0.3);
+    background: rgba(234, 179, 8, 0.1);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+    color: rgb(234, 179, 8);
 }
 
-.courses-state-message.empty p {
-  color: rgb(224, 197, 44);
+.courses-state-message.empty i {
+    color: rgb(234, 179, 8);
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .courses-state-message p {
-    font-size: 16px;
-  }
+    .courses-hero {
+        padding: 100px 5% 30px;
+    }
 
-  .spinner {
-    width: 30px;
-    height: 30px;
-    border-width: 4px;
-  }
+    .coursespage .container-section {
+        padding-top: 10px;
+    }
+
+    .coursespage .container {
+        width: 95vw;
+        padding: 24px 16px;
+    }
+
+    .courses-state-message p {
+        font-size: 16px;
+    }
+
+    .spinner {
+        width: 30px;
+        height: 30px;
+    }
 }
 

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './signup.css';
 
 function Signupform() {
-
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
@@ -11,18 +10,19 @@ function Signupform() {
   const [password, setPassword] = useState('');
   const [course, setCourse] = useState('');
   const [city, setCity] = useState('');
-        const [college, setCollege] = useState('');
-        const [role, setRole] = useState('user');
+  const [college, setCollege] = useState('');
+  const [role, setRole] = useState('user');
+  const [isLoading, setIsLoading] = useState(false);
 
   const submithandler = async (e) => {
     e.preventDefault();
 
-    // ✅ validation
     if (!username || !email || !password) {
       alert("Please fill all required fields");
       return;
     }
 
+    setIsLoading(true);
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -44,100 +44,119 @@ function Signupform() {
 
       if (response.ok) {
         alert('Registration Successful!');
-
-        // ✅ redirect to homepage
         navigate('/');
-
       } else {
         alert(data.message || "Signup failed");
       }
-
     } catch (error) {
       console.log(error);
       alert("Server error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const inputFields = [
+    { label: 'Username', type: 'text', value: username, setter: setUsername, placeholder: 'Enter username', required: true },
+    { label: 'Email', type: 'email', value: email, setter: setEmail, placeholder: 'Enter email', required: true },
+    { label: 'Password', type: 'password', value: password, setter: setPassword, placeholder: 'Enter password', required: true },
+  ];
+
+  const selectFields = [
+    { label: 'Course', value: course, setter: setCourse, options: [
+      { value: '', label: 'Select Course' },
+      { value: 'btech', label: 'B.Tech' },
+      { value: 'mca', label: 'MCA' },
+      { value: 'bca', label: 'BCA' },
+      { value: 'mba', label: 'MBA' },
+    ]},
+    { label: 'City', value: city, setter: setCity, options: [
+      { value: '', label: 'Select City' },
+      { value: 'bareilly', label: 'Bareilly' },
+      { value: 'delhi', label: 'Delhi' },
+      { value: 'lucknow', label: 'Lucknow' },
+      { value: 'mumbai', label: 'Mumbai' },
+    ]},
+    { label: 'College', value: college, setter: setCollege, options: [
+      { value: '', label: 'Select College' },
+      { value: 'itm', label: 'ITM College' },
+      { value: 'mit', label: 'MIT' },
+      { value: 'amity', label: 'Amity University' },
+      { value: 'du', label: 'Delhi University' },
+    ]},
+    { label: 'Role', value: role, setter: setRole, options: [
+      { value: 'user', label: 'Student' },
+      { value: 'admin', label: 'Admin' },
+    ]},
+  ];
+
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
+    <div className="main-signup-form">
+      <div className="signup-bg-shapes">
+        <div className="signup-shape shape-a"></div>
+        <div className="signup-shape shape-b"></div>
+        <div className="signup-shape shape-c"></div>
+      </div>
+      <div className="signup-form-wrapper">
+        <div className="signup-form-card">
+          <div className="signup-header">
+            <div className="signup-icon">
+              <i className="fas fa-user-plus"></i>
+            </div>
+            <h2>Create Account</h2>
+Join EduVerse and start your learning journey
+          </div>
 
-      <form onSubmit={submithandler}>
+          <form className="signup-form" onSubmit={submithandler}>
+            {inputFields.map((field) => (
+              <div className="input-group" key={field.label}>
+                <label>
+                  <i className={`fas fa-${field.type === 'password' ? 'lock' : field.type === 'email' ? 'envelope' : 'user'}`}></i>
+                  {field.label}
+                </label>
+                <input
+                  type={field.type}
+                  value={field.value}
+                  onChange={(e) => field.setter(e.target.value)}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                />
+              </div>
+            ))}
 
-        <div className="form-group">
-          <label>Username</label>
-          <input 
-            type="text"
-            
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter username"
-          />
+            {selectFields.map((field) => (
+              <div className="input-group" key={field.label}>
+                <label>
+                  <i className={`fas fa-${field.label === 'Role' ? 'shield-alt' : field.label === 'Course' ? 'graduation-cap' : field.label === 'City' ? 'map-marker-alt' : 'university'}`}></i>
+                  {field.label}
+                </label>
+                <select value={field.value} onChange={(e) => field.setter(e.target.value)}>
+                  {field.options.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+
+            <button type="submit" className="btn-signup-submit" disabled={isLoading}>
+              {isLoading ? (
+                <><div className="btn-spinner"></div> Creating Account...</>
+              ) : (
+                <><i className="fas fa-user-plus"></i> Sign Up</>
+              )}
+            </button>
+          </form>
+
+          <div className="signup-footer">
+            <p>Already have an account?</p>
+            <Link to="/login">
+              <button className="btn-login-link">
+                <i className="fas fa-sign-in-alt"></i> Sign In
+              </button>
+            </Link>
+          </div>
         </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input 
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password</label>
-          <input 
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-          />
-        </div>
-
-        <div className="form-group">
-          <select value={course} onChange={(e) => setCourse(e.target.value)}>
-            <option value="">Select Course</option>
-            <option value="btech">B.Tech</option>
-            <option value="mca">MCA</option>
-            <option value="bca">BCA</option>
-            <option value="mba">MBA</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <select value={city} onChange={(e) => setCity(e.target.value)}>
-            <option value="">Select City</option>
-            <option value="bareilly">Bareilly</option>
-            <option value="delhi">Delhi</option>
-            <option value="lucknow">Lucknow</option>
-            <option value="mumbai">Mumbai</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <select value={college} onChange={(e) => setCollege(e.target.value)}>
-            <option value="">Select College</option>
-            <option value="itm">ITM College</option>
-            <option value="mit">MIT</option>
-            <option value="amity">Amity University</option>
-            <option value="du">Delhi University</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Role</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="user">Student</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-
-        <button type="submit">Sign up</button>
-
-        
-
-      </form>
+      </div>
     </div>
   );
 }
